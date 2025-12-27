@@ -1,27 +1,62 @@
+# =========================
 # Python
+# =========================
 __pycache__/
-*.pyc
-.env
-.envrc
+*.py[cod]
+*.pyo
+*.pyd
 
-# Virtual environment
+# Virtual environments
 .venv/
 venv/
+env/
+ENV/
 
-# Env files
-*.env
-*.env.*
+# =========================
+# Build / Packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
 
-# Database
-*.db
-*.sqlite3
-
-# OS files
+# =========================
+# OS / Editor noise
+# =========================
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 
-# Config
+# =========================
+# Aura Runtime State (CRITICAL)
+# =========================
+# User config & identity (NEVER commit)
+.aura/
+aura/config.yaml
+aura/identity/
+aura/aura.db
+
+# If accidentally created inside repo
+identity/
 config.yaml
+aura.db
 
-#Identity
-identity
+# =========================
+# Logs / temp
+# =========================
+*.log
+*.tmp
+*.bak
+
+# =========================
+# Ollama / LLM cache (if any)
+# =========================
+.ollama/
+
+# =========================
+# Coverage / Testing
+# =========================
+.coverage
+htmlcov/
+.pytest_cache/
