@@ -15,11 +15,14 @@ from aura.features.vector_memory import (
     maybe_store_memory,
 )
 
+from aura.tools.registry import handle_tools
+
 
 def start_chat(llm):
-    # --- Init ---
+    # ---------- Init ----------
     init_db()
     init_user_memory()
+
     identity = load_identity_metadata()
     user_id = identity["user_id"]
 
@@ -34,16 +37,23 @@ def start_chat(llm):
     while True:
         user_input = input("You: ").strip()
 
-        # EXIT
+        # 1️⃣ Exit
         if user_input.lower() in ("exit", "quit"):
             print("👋 Bye!")
             break
 
-        # Slash commands
+        # 2️⃣ Slash commands
         if handle_command(user_input):
             continue
 
-        # --- Retrieve semantic memories ---
+        # 3️⃣ TOOL HANDLING (browser, system actions)
+        tool_result = handle_tools(llm, user_input)
+        if tool_result:
+            # Tool already handled the request (e.g., opened browser)
+            print("Aura:", tool_result)
+            continue
+
+        # 4️⃣ Retrieve semantic memories (RAG)
         memories = retrieve_memories(user_id, user_input, limit=5)
 
         messages = [system_prompt]
@@ -59,10 +69,10 @@ def start_chat(llm):
                 )
             )
 
-        # Tool context (web search)
+        # 5️⃣ Web search tool injection (optional context)
         inject_tools(llm, user_input, messages)
 
-        # Conversation history
+        # 6️⃣ Conversation history
         history = load_messages(conversation_id, limit=10)
         for role, content in history:
             if role == "user":
@@ -70,11 +80,15 @@ def start_chat(llm):
             else:
                 messages.append(AIMessage(content=content))
 
-        # Current input
+        # 7️⃣ Current user input
         messages.append(HumanMessage(content=user_input))
 
-        # Model call
-        response = llm.invoke(messages).content.strip()
+        # 8️⃣ Model call
+        try:
+            response = llm.invoke(messages).content.strip()
+        except Exception as e:
+            print("⚠️ Model error:", e)
+            continue
 
         if not response:
             print("⚠️ Empty response.")
@@ -82,14 +96,14 @@ def start_chat(llm):
 
         print("Aura:", response)
 
-        # Persist
+        # 9️⃣ Persist conversation
         save_message(conversation_id, "user", user_input)
         save_message(conversation_id, "assistant", response)
 
-        # Store semantic memory AFTER response
+        # 🔟 Store semantic memory AFTER response
         maybe_store_memory(user_id, user_input)
 
-        # Summarize if needed
+        # 1️⃣1️⃣ Summarize if needed
         new_cid = maybe_summarize(llm, conversation_id)
         if new_cid:
             conversation_id = new_cid
