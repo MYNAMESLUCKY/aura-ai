@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aura-ai"
+version = "0.1.0"
+description = "Aura AI – terminal-first autonomous AI assistant"
+authors = [{ name = "Aura AI" }]
+readme = "README.md"
+requires-python = ">=3.9"
+
+dependencies = [
+  "pyyaml",
+  "requests",
+  "langchain-ollama",
+  "langchain-core",
+  "langchain-tavily",
+  "cryptography>=42.0.0",
+  "argon2-cffi>=23.1.0",
+]
+
+[project.scripts]
+aura = "aura.__main__:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

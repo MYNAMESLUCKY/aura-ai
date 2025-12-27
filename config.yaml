@@ -1,0 +1,12 @@
+app:
+  version: 0.5.0
+
+llm:
+  provider: ollama
+  model: deepseek-v3.1:671b-cloud
+
+web:
+  enabled: true
+
+custom:
+  note: "do not delete me"
