@@ -42,10 +42,14 @@ and **optional live web search** — all stored locally on your machine.
 ollama pull deepseek-v3.1:671b-cloud
 
 
-________________________________________________________________-------
-git clone <your-repo>
+________________________________________________________________
 cd aura
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-__________________________________________________________________-----
+__________________________________________________________________
+
+_______________________-TAVILY KEY SETUP-__________________________________________________
+## set "TAVILY_API_KEY" to access the web search functionality
+
+## You can set it using "$env:TAVILY_API_KEY="tvly-xxxxx"
