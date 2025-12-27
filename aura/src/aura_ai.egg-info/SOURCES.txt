@@ -4,7 +4,9 @@ src/aura/__init__.py
 src/aura/__main__.py
 src/aura/app.py
 src/aura/config.py
+src/aura/db.py
 src/aura/doctor.py
+src/aura/embeddings.py
 src/aura/identity.py
 src/aura/identity_lock.py
 src/aura/identity_paths.py
@@ -21,7 +23,17 @@ src/aura/features/memory_extractor.py
 src/aura/features/summarizer.py
 src/aura/features/tools.py
 src/aura/features/user_memory.py
+src/aura/features/vector_memory.py
 src/aura/features/web_search.py
+src/aura/tools/__init__.py
+src/aura/tools/intent.py
+src/aura/tools/registry.py
+src/aura/tools/browser/__init__.py
+src/aura/tools/browser/detect.py
+src/aura/tools/browser/enrich.py
+src/aura/tools/browser/execute.py
+src/aura/tools/browser/intent.py
+src/aura/tools/browser/open.py
 src/aura_ai.egg-info/PKG-INFO
 src/aura_ai.egg-info/SOURCES.txt
 src/aura_ai.egg-info/dependency_links.txt
