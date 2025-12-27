@@ -52,6 +52,7 @@ __________________________________________________________________
 ```
 ## TAVILY API KEY 
 
-# set "TAVILY_API_KEY" to access the web search functionality
-
-# You can set it using "$env:TAVILY_API_KEY="tvly-xxxxx"
+### set "TAVILY_API_KEY" to access the web search functionality
+```bash
+$env:TAVILY_API_KEY="tvly-xxxxx
+```
