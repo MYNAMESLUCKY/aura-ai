@@ -14,6 +14,12 @@ from aura.features.vector_memory import (
     retrieve_memories,
     maybe_store_memory,
 )
+from aura.tools.registry import handle_tools
+
+tool_result = handle_tools(llm, user_input)
+if tool_result:
+    print("Aura:", tool_result)
+    continue
 
 
 def start_chat(llm):
