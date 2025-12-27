@@ -1,0 +1,7 @@
+pyyaml
+requests
+langchain-ollama
+langchain-core
+langchain-tavily
+cryptography>=42.0.0
+argon2-cffi>=23.1.0

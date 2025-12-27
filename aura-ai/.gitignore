@@ -22,15 +22,3 @@ Thumbs.db
 
 # Config
 config.yaml
-
-# Aura runtime data
-.aura/
-config.yaml
-identity/
-*.db
-
-# Python
-__pycache__/
-*.pyc
-.venv/
-
