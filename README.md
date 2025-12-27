@@ -50,7 +50,7 @@ pip install -r requirements.txt
 __________________________________________________________________
 
 ```
-## TAVILY API KEY 
+## 🔑 TAVILY API KEY 
 
 ### set "TAVILY_API_KEY" to access the web search functionality
 ```bash
