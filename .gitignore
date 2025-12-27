@@ -1,16 +1,24 @@
 # Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
-*.egg-info/
 .env
+.envrc
+
+# Virtual environment
 .venv/
+venv/
 
-# Aura local data
-.aura/
-aura.db
+# Env files
+*.env
+*.env.*
 
-# OS
+# Database
+*.db
+*.sqlite3
+
+# OS files
 .DS_Store
 Thumbs.db
+
+# Config
+config.yaml
