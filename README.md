@@ -51,9 +51,9 @@ pip install -e.
 __________________________________________________________________-----
 
 ```
----
--Now Running the AI model is an important part :-
---1)First check if the Ollama Model is running well in your localhost:{port} usually 11434 port.
---2)Now in your terminal you can use the Aura-AI with the command "aura"
---3)It will take up some time to load and for the first query and after that everything goes smoothly based on your internet speed.
----
+```
+-**Now Running the AI model is an important part :-**
+-1)First check if the Ollama Model is running well in your localhost:{port} usually 11434 port.
+-2)Now in your terminal you can use the Aura-AI with the command "aura"
+-3)It will take up some time to load and for the first query and after that everything goes smoothly based on your internet speed.
+```
