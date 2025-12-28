@@ -53,6 +53,7 @@ __________________________________________________________________-----
 ```
 ---
 ```
+# 🏃 How To Run The Agent
 -**Now Running the AI model is an important part :-**
 -1)First check if the Ollama Model is running well in your localhost:{port} usually 11434 port.
 -2)Now in your terminal you can use the Aura-AI with the command "aura"
