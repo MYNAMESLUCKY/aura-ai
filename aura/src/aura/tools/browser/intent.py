@@ -4,21 +4,24 @@ import json
 
 INTENT_PROMPT = SystemMessage(
     content=(
-        "You are a tool-intent extractor.\n\n"
-        "If the user request can be satisfied by opening a website, "
-        "You have fufill the request of the user by using all the possible means and using all the possible tools that are avaialble to you,"
-        "For requests involving opening websites, searching online,"
-        "playing media, or browsing information, you MUST return JSON.\n\n"
-        "Even if the user asks for information, "
-        "prefer browser usage when a website exists.\n\n"
-        "Return ONLY valid JSON.\n"
-        "If uncertain, still return a best-effort browser intent.\n\n"
+        "You are a tool-intent extractor for browser actions.\n\n"
+        "For any request to open/visit/play/search on a website, extract the intent as JSON.\n\n"
+        "CRITICAL RULES:\n"
+        "1. For well-known sites, ALWAYS return the direct URL:\n"
+        '   - YouTube -> "https://www.youtube.com"\n'
+        '   - Spotify -> "https://open.spotify.com"\n'
+        '   - GitHub -> "https://github.com"\n'
+        '   - Wikipedia -> "https://en.wikipedia.org"\n'
+        '   - Netflix -> "https://www.netflix.com"\n'
+        "2. For search/query requests, return what to search for\n"
+        "3. For unknown sites, return the site name to search for\n\n"
         "Schema:\n"
         "{\n"
         '  "tool": "browser",\n'
         '  "action": "open|search|play",\n'
-        '  "query": "<what should be opened or searched>"\n'
+        '  "query": "<direct URL or search term>"\n'
         "}\n\n"
+        "Return ONLY valid JSON.\n"
         "Only return {} if a browser is truly irrelevant."
     )
 )
@@ -35,8 +38,28 @@ def parse_browser_intent(llm, user_input: str) -> dict | None:
 
         # 🔒 Hard cleanup (handles model chatter)
         if not raw.startswith("{"):
-            raw = raw[raw.find("{"):]
+            start_idx = raw.find("{")
+            if start_idx == -1:
+                return None
+            raw = raw[start_idx:]
 
+        # 🔒 Extract ONLY the JSON object (handle trailing data)
+        brace_count = 0
+        json_end = 0
+        for i, char in enumerate(raw):
+            if char == "{":
+                brace_count += 1
+            elif char == "}":
+                brace_count -= 1
+                if brace_count == 0:
+                    json_end = i + 1
+                    break
+
+        if json_end == 0:
+            print("⚠️ Browser intent parsing failed: No valid JSON object found")
+            return None
+
+        raw = raw[:json_end]
         data = json.loads(raw)
 
         # 🔐 STRICT validation - check for action field, not platform

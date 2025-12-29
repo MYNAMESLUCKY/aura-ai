@@ -1,9 +1,15 @@
 from langchain_ollama import ChatOllama
+import sys
+import io
 
 from aura.config import load_config
 from aura.features.chat import start_chat
 from aura.ollama_utils import is_ollama_running, get_available_models
 from aura.db import init_aura_db
+
+# Set UTF-8 encoding for Windows compatibility
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 def run_agent():

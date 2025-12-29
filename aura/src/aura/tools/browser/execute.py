@@ -10,11 +10,12 @@ def execute_browser_intent(intent: dict) -> str:
     """
     Executes a browser intent.
     Priority:
-    1. Direct URL (best case)
-    2. Tavily fallback with domain filtering
+    1. Direct URL in 'url' field
+    2. Direct URL in 'query' field (LLM may put URL there)
+    3. Web search fallback for search queries
     """
 
-    # ---------- 1️⃣ Direct URL ----------
+    # ---------- 1️⃣ Check for explicit 'url' field ----------
     url = intent.get("url")
     if isinstance(url, str) and url.startswith("http"):
         try:
@@ -24,12 +25,22 @@ def execute_browser_intent(intent: dict) -> str:
             print(f"⚠️ Failed to open URL {url}: {e}")
             return f"⚠️ Failed to open browser: {e}"
 
-    # ---------- 2️⃣ Tavily Fallback ----------
+    # ---------- 2️⃣ Check if query is actually a URL ----------
     query = intent.get("query")
 
     if not query:
         return "⚠️ No query provided for browser action."
 
+    # Check if query itself is a valid URL
+    if isinstance(query, str) and query.startswith("http"):
+        try:
+            webbrowser.open(query)
+            return f"🌐 Opened: {query}"
+        except Exception as e:
+            print(f"⚠️ Failed to open URL {query}: {e}")
+            return f"⚠️ Failed to open browser: {e}"
+
+    # ---------- 3️⃣ Web search fallback ----------
     try:
         web_result = run_web_search(query)
     except Exception as e:
@@ -39,12 +50,12 @@ def execute_browser_intent(intent: dict) -> str:
     if not web_result or web_result.startswith("⚠️"):
         return "⚠️ Web search unavailable."
 
-    # ---------- 3️⃣ Extract ALL URLs ----------
+    # ---------- 4️⃣ Extract URLs from search results ----------
     urls = _URL_REGEX.findall(web_result)
     if not urls:
         return "⚠️ Couldn't find a suitable link to open."
 
-    # ---------- 4️⃣ Open the first valid URL ----------
+    # ---------- 5️⃣ Open the first valid URL ----------
     try:
         webbrowser.open(urls[0])
         return f"🌐 Opened result: {urls[0]}"
